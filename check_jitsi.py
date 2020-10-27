@@ -165,7 +165,8 @@ class CheckJitsi:
         if metrics:
             perfdata = '|'
             perfdata += ' '.join(
-                ["{}={}".format(k, int(v)) if type(v) == bool else "{}={}".format(k, v) for k, v in metrics.items()])
+                ["{}={}".format(k, int(v)) if type(v) == bool 
+                 else "{}={}".format(k, v) if type(v) != list and k != 'version' else '' for k, v in metrics.items()])
 
         print(message, perfdata)
         sys.exit(rc.value)
@@ -206,7 +207,7 @@ class CheckJitsi:
             self._state = CheckState.WARNING
 
         self.check_result(self._state, msg,
-                          {name: "{};;{};{}".format(value, self.args.threshold_warning, self.args.threshold_critical)})
+                          {name: "{};{};{}".format(value, self.args.threshold_warning, self.args.threshold_critical)})
 
     def check(self):
         if self.args.mode == 'health':
